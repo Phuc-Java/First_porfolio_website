@@ -41,7 +41,6 @@ const TrueFocus = memo<TrueFocusProps>(({
   // Split by phrases if provided, otherwise by words
   const items = phrases || sentence.split(' ');
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
-  const [lastActiveIndex, setLastActiveIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [focusRect, setFocusRect] = useState<FocusRect>({ x: 0, y: 0, width: 0, height: 0 });
@@ -77,7 +76,6 @@ const TrueFocus = memo<TrueFocusProps>(({
 
   const handleMouseEnter = (index: number) => {
     if (manualMode) {
-      setLastActiveIndex(currentIndex);
       setCurrentIndex(index);
     }
   };

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
-import { useTransition, useCallback, useEffect } from 'react';
+import { useTransition, useCallback } from 'react';
 
 /**
  * Custom hook for smooth page transitions with loading state

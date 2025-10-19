@@ -9,7 +9,7 @@ import {
   type SpringOptions,
   AnimatePresence
 } from 'motion/react';
-import React, { Children, cloneElement, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { usePageTransition } from '@/lib/hooks/usePageTransition';
 import { DOCK_CONFIG } from '@/lib/constants/navigation';
