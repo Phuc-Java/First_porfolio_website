@@ -1,0 +1,84 @@
+/* Hacker/terminal themed mobile block */
+.mobile-block{
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* make the page background transparent so Hyperspeed is visible behind */
+  background: transparent;
+  z-index: 2147483640;
+  color: #b7ffdf;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+}
+.mobile-inner{
+  width: min(760px, calc(100% - 48px));
+  padding: 28px 30px;
+  border-radius: 12px;
+  /* translucent glass so background shows through */
+  background: linear-gradient(180deg, rgba(6,12,14,0.52), rgba(2,6,8,0.42));
+  border: 1px solid rgba(41,240,215,0.06);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+  backdrop-filter: blur(8px) saturate(1.1);
+  transform-origin: center;
+  animation: card-entrance 520ms cubic-bezier(.2,.9,.3,1);
+  position: relative;
+  z-index: 5;
+}
+.mobile-inner .top-row{ display:flex; align-items:center; gap:16px; margin-bottom:14px }
+.mobile-inner .error-icon{ width:64px; height:64px; border-radius:12px; background:linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.25)); border:1px solid rgba(41,240,215,0.12); display:flex; align-items:center; justify-content:center; font-size:24px; color:#07f2c6 }
+.mobile-inner .title{ font-weight:800; font-size:22px; color:#eafff4; text-transform:uppercase; letter-spacing:1px }
+.mobile-inner .message{ margin: 8px 0 12px 0; color: rgba(183,255,223,0.96); font-size:17px }
+.mobile-inner .details{ font-size:13px; color: rgba(183,255,223,0.6); margin-bottom:14px; line-height:1.5 }
+.mobile-inner .controls{ display:flex; gap:14px; align-items:center; justify-content:space-between }
+.mobile-inner .checkbox{ display:flex; gap:8px; align-items:center; font-size:13px }
+.mobile-inner input[type="checkbox"]{ width:16px; height:16px }
+.mobile-inner .btn{ background:transparent; color:#07f2c6; padding:10px 14px; border-radius:8px; border:1px solid rgba(7,242,198,0.12); font-weight:700; cursor:pointer }
+.mobile-inner .footer{ margin-top:14px; font-size:13px; color:rgba(183,255,223,0.6) }
+
+@media (max-width:420px){
+  .mobile-inner{ width: calc(100% - 28px); padding: 18px }
+  .mobile-inner .error-icon{ width:48px; height:48px }
+}
+
+/* Neon glow variables and keyframes */
+:root{
+  --neon: #29f0d7;
+  --neon-weak: rgba(41,240,215,0.12);
+}
+
+/* Hyperspeed background container should fill viewport and sit behind content */
+.hyperspeed-bg{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hyperspeed-bg > *{
+  position: absolute;
+  inset: 0;
+}
+
+.mobile-inner .error-icon svg rect{ fill: rgba(0,16,21,0.9); }
+.mobile-inner .error-icon svg path,
+.mobile-inner .error-icon svg circle{ filter: drop-shadow(0 0 8px var(--neon)); }
+
+@keyframes neon-flicker {
+  0%{ opacity:1 }
+  50%{ opacity:0.86 }
+  100%{ opacity:1 }
+}
+
+@keyframes card-entrance {
+  0%{ transform: translateY(12px) scale(0.995); opacity:0 }
+  60%{ transform: translateY(-6px) scale(1.002); opacity:1 }
+  100%{ transform: translateY(0) scale(1); opacity:1 }
+}
+
+.mobile-inner .title{ animation: neon-flicker 2.6s infinite ease-in-out }
+
+/* subtle border glow */
+.mobile-inner{ box-shadow: 0 18px 60px rgba(0,0,0,0.75), 0 0 40px rgba(41,240,215,0.02) inset; }
+
+/* webfont import removed to avoid CSS parsing issues in client CSS files */

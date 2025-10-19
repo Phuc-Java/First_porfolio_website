@@ -1,0 +1,121 @@
+.music-widget {
+  /* Force widget fixed to viewport so it's always visible regardless of page layout */
+  position: fixed !important;
+  right: 46px !important;
+  bottom: 50px !important;
+  z-index: 100000 !important; /* ensure above sidebars */
+  font-family: inherit;
+  pointer-events: auto;
+  display: block;
+}
+
+/* Icon */
+.music-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+  padding: 6px;
+  border: 1px solid rgba(255,255,255,0.04);
+  pointer-events: auto;
+}
+
+.music-icon:hover { transform: translateY(-4px); }
+.music-icon.playing { animation: music-spin 2s linear infinite; }
+
+.music-halo {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(125,249,255,0.14), rgba(125,249,255,0.02));
+  z-index: -1;
+  pointer-events: none;
+  animation: music-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes music-pulse {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6 }
+  50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.85 }
+  100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6 }
+}
+
+.music-badge {
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  transform: translateX(-50%) translateY(50%);
+  background: rgba(0,0,0,0.65);
+  color: #7df9ff;
+  padding: 6px 10px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  border: 1px solid rgba(125,249,255,0.12);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+}
+
+@keyframes music-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Panel positioned relative to the fixed widget: open above the icon */
+.music-panel {
+  position: absolute;
+  right: 12px; /* slightly to the left of the icon to avoid overlap */
+  bottom: 84px; /* open above the icon */
+  width: 340px;
+  max-height: 420px;
+  background: rgba(6,6,6,0.95);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+  padding: 12px;
+  transform-origin: bottom right;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px) translateX(-6px) scale(0.99);
+  transition: opacity 180ms ease, transform 180ms ease;
+  /* prevent horizontal scrollbar while allowing vertical scrolling */
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.music-panel.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+.music-header { font-weight: 700; margin-bottom: 8px; font-size: 14px; }
+.music-list { list-style: none; padding: 0; margin: 0; }
+.music-item { margin-bottom: 6px; }
+.music-item-btn { display:flex; width:100%; justify-content:space-between; align-items:center; padding:8px; border-radius:8px; background:transparent; border:0; color:inherit; cursor:pointer; text-align:left; box-sizing: border-box; }
+.music-item-btn:hover { background: rgba(255,255,255,0.02); }
+.music-item.current .music-item-btn { background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); }
+.music-title { font-size:13px; }
+.music-action { font-size:12px; opacity:0.85; }
+
+@media (max-width: 640px) {
+  .music-panel { right: 12px; width: calc(100vw - 48px); bottom: 80px; }
+}
+
+/* Left-positioned playlist variant */
+.music-panel.left {
+  position: fixed !important;
+  left: 20px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 360px;
+  max-height: 80vh;
+}
