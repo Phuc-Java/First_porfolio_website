@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
+// use a plain <img> for the background to avoid next/image remote host restrictions
 import "./not-found.css";
 
 export default function NotFound() {
@@ -94,7 +94,9 @@ export default function NotFound() {
         <Link href="/" className="back">back to home</Link>
       </div>
 
-      <Image ref={imgRef} src="http://www.supah.it/dribbble/008/008.jpg" alt="bg" width={1200} height={800} />
+      {/* plain img avoids Next.js image host validation and works immediately */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img ref={imgRef} src="http://www.supah.it/dribbble/008/008.jpg" alt="bg" />
     </div>
   );
 }

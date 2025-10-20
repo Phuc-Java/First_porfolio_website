@@ -1,4 +1,3 @@
-/* eslint-disable */
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -36,7 +35,7 @@ export default function MusicWidget(): React.ReactElement | null {
       try {
         audio.currentTime = 0;
         audio.play().catch(() => setPlaying(false));
-      } catch (e) {
+      } catch {
         // ignore
       }
     };
@@ -103,10 +102,22 @@ export default function MusicWidget(): React.ReactElement | null {
       return;
     }
 
-    audio.src = encodeURI(tracks[current].src);
+    // Encode each path segment to ensure spaces, parentheses and other
+    // special characters are percent-encoded correctly on production (Linux)
+    const parts = tracks[current].src.split('/');
+    const safe = parts
+      .map((p, i) => (i === 0 && p === '' ? '' : encodeURIComponent(p)))
+      .join('/');
+    // set preload so browsers can fetch metadata and reduce play delays
+    audio.preload = 'metadata';
+    audio.src = safe;
     audio.load();
-    if (playing) audio.play().catch(() => setPlaying(false));
-  }, [current]);
+    if (playing) audio.play().catch((err) => {
+      // Log to help debugging on deployed environments (autoplay policies, CORS, etc.)
+      console.warn('MusicWidget: play() failed', err);
+      setPlaying(false);
+    });
+  }, [current, playing]);
 
   // Play/pause handling
   useEffect(() => {
@@ -165,7 +176,7 @@ export default function MusicWidget(): React.ReactElement | null {
         aria-label={playing ? "Pause music" : "Play music"}
       >
         <div className="music-halo" />
-        <Image src="/Music/headphone.svg" alt="music" width={48} height={48} />
+  <Image src="/Music/headphone.svg" alt="music" width={48} height={48} />
         <div className="music-badge">Music</div>
       </button>
 
@@ -188,9 +199,40 @@ export default function MusicWidget(): React.ReactElement | null {
         </ElectricBorder>
       </div>
 
-      <audio ref={audioRef} />
     </div>
   );
+
+  // Ensure a single global audio element exists and reuse it. This avoids
+  // duplicate audio sources when other components (like OpeningOverlay)
+  // attempt to play music before the widget mounts.
+  useEffect(() => {
+    // try to reuse existing audio element
+    const existing = document.getElementById("music-widget-audio") as HTMLAudioElement | null;
+    if (existing) {
+      audioRef.current = existing;
+      return;
+    }
+
+    // create a hidden audio element inside the portal container (or body)
+    const el = document.createElement("audio");
+    el.id = "music-widget-audio";
+    el.setAttribute("data-music-widget", "true");
+    el.preload = "metadata";
+    el.style.display = "none";
+    try {
+      const host = portalElRef.current || document.body;
+      host.appendChild(el);
+      audioRef.current = el;
+    } catch (e) {
+      // fallback: attach to body
+      try { document.body.appendChild(el); audioRef.current = el; } catch {}
+    }
+
+    return () => {
+      // do not remove the audio element if other parts rely on it; keep it persistent
+      audioRef.current = null;
+    };
+  }, [portalElRef.current]);
 
   if (!mounted || !portalElRef.current) return null; // don't render inline to avoid footer placement
   return createPortal(widget, portalElRef.current);

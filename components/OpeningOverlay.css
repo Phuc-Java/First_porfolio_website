@@ -1,0 +1,13 @@
+/* Static night background for OpeningOverlay (effects removed) */
+.opening-overlay {
+  position: fixed;
+  inset: 0;
+}
+.opening-overlay .night-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  overflow: hidden;
+  z-index: 0;
+}
