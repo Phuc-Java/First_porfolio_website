@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function OpeningOverlay({
-  src = "/Gif/gif1.gif",
+  src = "/gif/gif1.gif",
   duration = 120000,
   fadeMs = 600,
 }: Props) {
