@@ -10,11 +10,11 @@ import ElectricBorder from "./ElectricBorder";
 type Track = { id: string; title: string; src: string };
 
 const tracks: Track[] = [
-  { id: "1", title: "05 (Không Phai) (Masew Remix)", src: "/music/05 (Khong Phai) (Masew Remix) - Nhieu nghe si - NhacHayVN.mp3" },
-  { id: "2", title: "Có Một Người Vẫn Đợi (Remix)", src: "/music/Co Mot Nguoi Van Doi (Remix) - Viet Lee, BConcept - NhacHayVN.mp3" },
-  { id: "3", title: "Don't Coi Ver2 Remix (Anhvu Remix)", src: "/music/Don't Coi Ver2 Remix ( Anhvu Remix ) - Minh TienL - NhacHayVN.mp3" },
-  { id: "4", title: "Em Là Ai (Dai Meo Remix)", src: "/music/Em La Ai (Dai Meo Remix) - Keyo - NhacHayVN.mp3" },
-  { id: "5", title: "Rước Nắng (Air Remix)", src: "/music/Ruoc Nang (Air Remix) - BIN - NhacHayVN.mp3" },
+  { id: "1", title: "05 (Không Phai) (Masew Remix)", src: "/Music/05 (Khong Phai) (Masew Remix) - Nhieu nghe si - NhacHayVN.mp3" },
+  { id: "2", title: "Có Một Người Vẫn Đợi (Remix)", src: "/Music/Co Mot Nguoi Van Doi (Remix) - Viet Lee, BConcept - NhacHayVN.mp3" },
+  { id: "3", title: "Don't Coi Ver2 Remix (Anhvu Remix)", src: "/Music/Don't Coi Ver2 Remix ( Anhvu Remix ) - Minh TienL - NhacHayVN.mp3" },
+  { id: "4", title: "Em Là Ai (Dai Meo Remix)", src: "/Music/Em La Ai (Dai Meo Remix) - Keyo - NhacHayVN.mp3" },
+  { id: "5", title: "Rước Nắng (Air Remix)", src: "/Music/Ruoc Nang (Air Remix) - BIN - NhacHayVN.mp3" },
 ];
 
 export default function MusicWidget(): React.ReactElement | null {
@@ -165,7 +165,7 @@ export default function MusicWidget(): React.ReactElement | null {
         aria-label={playing ? "Pause music" : "Play music"}
       >
         <div className="music-halo" />
-        <Image src="/music/headphone.svg" alt="music" width={48} height={48} />
+        <Image src="/Music/headphone.svg" alt="music" width={48} height={48} />
         <div className="music-badge">Music</div>
       </button>
 
