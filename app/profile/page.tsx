@@ -20,7 +20,6 @@ import {
   IconArchive,
 } from "@tabler/icons-react";
 import { usePageTransition } from "@/lib/hooks/usePageTransition";
-import { cn } from "@/lib/utils";
 import { useRouter } from 'next/navigation';
 /**
  * Profile page - Professional profile layout with sidebar navigation
@@ -91,7 +90,7 @@ export default function ProfilePage() {
                   href: "#",
                   icon: (
                     <div className="h-8 w-8 shrink-0 rounded-full bg-white flex items-center justify-center border-2 border-purple-500/30">
-                      <img
+                      <Image
                         src="/vest1-removebg-preview.png"
                         className="h-7 w-7 rounded-full object-cover"
                         width={50}
@@ -167,14 +166,16 @@ export default function ProfilePage() {
             {/* Quote Badge */}
             <div className="inline-flex items-center gap-3 backdrop-blur-md bg-black/30 border border-white/10 rounded-full px-4 py-2">
               <div className="w-6 h-6 flex items-center justify-center rounded-full overflow-hidden bg-transparent">
-                <img 
+                <Image 
                   src="/vest1-removebg-preview.png" 
                   alt="Avatar" 
                   className="w-full h-full object-cover"
+                  width={24}
+                  height={24}
                 />
               </div>
               <span className="text-white/80 text-xs">
-                "Có chí thì nên"
+                &quot;Có chí thì nên&quot;
               </span>
             </div>
 
@@ -557,10 +558,12 @@ export const Logo = () => {
       href="#"
       className="relative z-20 flex items-center space-x-3 py-2 text-sm font-normal"
     >
-      <img 
+      <Image 
         src="/logo.png" 
         alt="Logo" 
         className="h-10 w-10 shrink-0 object-contain"
+        width={40}
+        height={40}
       />
       <motion.span
         initial={{ opacity: 0 }}
@@ -579,10 +582,12 @@ export const LogoIcon = () => {
       href="#"
       className="relative z-20 flex items-center justify-center py-2"
     >
-      <img 
+      <Image 
         src="/logo.png" 
         alt="Logo" 
         className="h-10 w-10 shrink-0 object-contain"
+        width={40}
+        height={40}
       />
     </a>
   );

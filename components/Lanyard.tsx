@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Canvas, extend, useFrame } from '@react-three/fiber';
+import { Canvas, extend, useFrame, type ThreeEvent } from '@react-three/fiber';
 import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
 import {
   BallCollider,
@@ -10,7 +10,7 @@ import {
   RigidBody,
   useRopeJoint,
   useSphericalJoint,
-  RigidBodyProps
+  type RigidBodyProps
 } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
@@ -86,20 +86,20 @@ interface BandProps {
 }
 
 function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
-  // Using "any" for refs since the exact types depend on Rapier's internals
-  const band = useRef<any>(null);
-  const fixed = useRef<any>(null);
-  const j1 = useRef<any>(null);
-  const j2 = useRef<any>(null);
-  const j3 = useRef<any>(null);
-  const card = useRef<any>(null);
+  // Refs for physics bodies and the band mesh
+  const band = useRef<THREE.Mesh | null>(null);
+  const fixed = useRef<any | null>(null);
+  const j1 = useRef<any | null>(null);
+  const j2 = useRef<any | null>(null);
+  const j3 = useRef<any | null>(null);
+  const card = useRef<any | null>(null);
 
   const vec = new THREE.Vector3();
   const ang = new THREE.Vector3();
   const rot = new THREE.Vector3();
   const dir = new THREE.Vector3();
 
-  const segmentProps: any = {
+  const segmentProps: Pick<RigidBodyProps, 'type' | 'canSleep' | 'colliders' | 'angularDamping' | 'linearDamping'> = {
     type: 'dynamic' as RigidBodyProps['type'],
     canSleep: true,
     colliders: false,
@@ -107,7 +107,10 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
     linearDamping: 4
   };
 
-  const { nodes, materials } = useGLTF(cardGLB) as any;
+  const { nodes, materials } = useGLTF(cardGLB) as unknown as {
+    nodes: Record<string, THREE.Mesh & { geometry: THREE.BufferGeometry }>;
+    materials: Record<string, THREE.MeshPhysicalMaterial & { map?: THREE.Texture }>;
+  };
   const texture = useTexture(lanyardTexture);
   const [curve] = useState(
     () =>
@@ -203,7 +206,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
       curve.points[1].copy(j2.current.lerped);
       curve.points[2].copy(j1.current.lerped);
       curve.points[3].copy(fixed.current.translation());
-      band.current.geometry.setPoints(curve.getPoints(32));
+      (band.current!.geometry as unknown as { setPoints: (points: THREE.Vector3[]) => void }).setPoints(curve.getPoints(32));
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
       card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
@@ -238,12 +241,14 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
             position={[0, -1.2, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
-            onPointerUp={(e: any) => {
-              e.target.releasePointerCapture(e.pointerId);
+            onPointerUp={(e: ThreeEvent<PointerEvent>) => {
+              const tgt = e.target as unknown as { releasePointerCapture: (id: number) => void };
+              tgt.releasePointerCapture(e.pointerId);
               drag(false);
             }}
-            onPointerDown={(e: any) => {
-              e.target.setPointerCapture(e.pointerId);
+            onPointerDown={(e: ThreeEvent<PointerEvent>) => {
+              const tgt = e.target as unknown as { setPointerCapture: (id: number) => void };
+              tgt.setPointerCapture(e.pointerId);
               drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current.translation())));
             }}
           >
@@ -263,9 +268,9 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
         </RigidBody>
       </group>
       <mesh ref={band}>
-        {/* @ts-ignore */}
+        {/* @ts-expect-error: meshline elements are provided via extend and not in JSX intrinsic elements */}
         <meshLineGeometry />
-        {/* @ts-ignore */}
+        {/* @ts-expect-error: meshline material is registered via extend at runtime */}
         <meshLineMaterial
           color="white"
           depthTest={false}

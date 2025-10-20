@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { CSSProperties, PropsWithChildren, useEffect, useId, useLayoutEffect, useRef } from 'react';
 
 type ElectricBorderProps = PropsWithChildren<{

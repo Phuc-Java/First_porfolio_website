@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import "./not-found.css";
 
 export default function NotFound() {
@@ -93,7 +94,7 @@ export default function NotFound() {
         <Link href="/" className="back">back to home</Link>
       </div>
 
-      <img ref={imgRef} src="http://www.supah.it/dribbble/008/008.jpg" alt="bg" />
+      <Image ref={imgRef} src="http://www.supah.it/dribbble/008/008.jpg" alt="bg" width={1200} height={800} />
     </div>
   );
 }

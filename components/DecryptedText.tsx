@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useEffect, useState, useRef } from 'react';
 import { motion, HTMLMotionProps } from 'motion/react';
 

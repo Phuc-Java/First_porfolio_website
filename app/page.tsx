@@ -8,14 +8,12 @@ import { TrueFocus } from '@/components/ui/TrueFocus';
 import { NAVIGATION_ITEMS } from '@/lib/constants/navigation';
 import Lanyard from '../components/Lanyard'
 import TextType from '../components/TextType';
-import { useRouter } from 'next/navigation';
 
 /**
  * Home page - Landing page with animated hero section
  * Features BlurText for name and TrueFocus for interactive subtitle
  */
 export default function HomePage() {
-  const router = useRouter();
 
   return (
     <PageContainer>
